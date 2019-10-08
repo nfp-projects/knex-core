@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /* eslint no-console:0, no-var:0 */
 const Liftoff = require('liftoff');
-const Bluebird = require('bluebird');
 const interpret = require('interpret');
 const path = require('path');
 const tildify = require('tildify');
 const commander = require('commander');
 const color = require('colorette');
 const argv = require('getopts')(process.argv.slice(2));
-const fs = Bluebird.promisifyAll(require('fs'));
+const fs = require('fs');
+const { promisify } = require('util');
 const cliPkg = require('../package');
 const {
   mkConfigObj,
@@ -22,6 +22,11 @@ const {
 } = require('./utils/cli-config-utils');
 const { DEFAULT_EXT } = require('./utils/constants');
 const { listMigrations } = require('./utils/migrationsLister');
+
+const fsPromised = {
+  readFile: promisify(fs.readFile),
+  writeFile: promisify(fs.writeFile),
+};
 
 function initKnex(env, opts) {
   checkLocalModule(env);
@@ -123,15 +128,15 @@ function invoke(env) {
       }
       checkLocalModule(env);
       const stubPath = `./knexfile.${type}`;
-      pending = fs
-        .readFileAsync(
+      pending = fsPromised
+        .readFile(
           path.dirname(env.modulePath) +
             '/lib/migrate/stub/knexfile-' +
             type +
             '.stub'
         )
         .then((code) => {
-          return fs.writeFileAsync(stubPath, code);
+          return fsPromised.writeFile(stubPath, code);
         })
         .then(() => {
           success(color.green(`Created ${stubPath}`));
@@ -331,7 +336,7 @@ function invoke(env) {
 
   commander.parse(process.argv);
 
-  Bluebird.resolve(pending).then(() => {
+  Promise.resolve(pending).then(() => {
     commander.outputHelp();
     exit('Unknown command-line options, exiting');
   });
