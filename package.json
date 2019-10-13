@@ -77,12 +77,6 @@
     "typescript": "^3.6.3",
     "webpack-cli": "^3.3.9"
   },
-  "buildDependencies": [
-    "rimraf"
-  ],
-  "bin": {
-    "knex": "./bin/cli.js"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/tgriesser/knex.git"
@@ -117,35 +111,13 @@
       "web": "https://www.codeflashbacks.com"
     }
   ],
-  "browser": {
-    "./lib/migrate/Migrator.js": "./lib/util/noop.js",
-    "./lib/bin/cli.js": "./lib/util/noop.js",
-    "./lib/seed/Seeder.js": "./lib/util/noop.js",
-    "mssql": false,
-    "mssql/lib/base": false,
-    "tedious": false,
-    "mysql": false,
-    "mysql2": false,
-    "pg": false,
-    "pg-query-stream": false,
-    "oracle": false,
-    "sqlite3": false,
-    "oracledb": false
-  },
-  "react-native": {
-    "./lib/migrate": "./lib/util/noop.js",
-    "./lib/seed": "./lib/util/noop.js"
-  },
   "files": [
     "CONTRIBUTING.md",
     "README.md",
-    "bin/*",
-    "lib/*",
     "lib/*",
     "knex.js",
     "LICENSE",
     "CHANGELOG.md",
-    "scripts/*",
     "types/index.d.ts",
     "types/result.d.ts"
   ],
