@@ -5,7 +5,7 @@ const bluebird = require('bluebird');
 const sqliteConfig = require('../knexfile').sqlite3;
 const sqlite3 = require('sqlite3');
 const { noop } = require('lodash');
-const inherits = require('inherits');
+const inherits = require('util').inherits;
 
 describe('knex', () => {
   describe('supports passing existing connection', () => {
